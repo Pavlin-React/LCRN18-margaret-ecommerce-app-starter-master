@@ -46,7 +46,7 @@ const Welcome = ({ navigation }) => {
             height: 50,
             borderRadius: SIZES.radius,
           }}
-          label="Get Started"
+          label="Get Started now"
           onPress={() => navigation.navigate("Walkthrough")}
         />
 
