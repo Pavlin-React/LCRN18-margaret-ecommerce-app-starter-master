@@ -1,10 +1,17 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { View, Animated, Text } from "react-native";
 import { TextButton } from "../../components";
 import { COLORS, SIZES, FONTS, constants } from "../../constants";
 import Walkthrough1 from "./Walkthrough1";
+import Walkthrough2 from "./Walkthrough2";
 
 const Walkthrough = () => {
+  let [walkthrough2Animate, setWalkthrough2Animate] = useState(false);
+  let onViewChangeRef = useRef(({ viewableItems, changed }) => {
+    if (viewableItems[0].index == 1) { 
+      setWalkthrough2Animate(true)
+    }
+  })
   let scrollX = useRef(new Animated.Value(0)).current;
   let Dots = () => {
     let dotPosition = Animated.divide(scrollX, SIZES.width);
@@ -54,29 +61,29 @@ const Walkthrough = () => {
         }}
       >
         <Dots />
-        <View style={{flexDirection: 'row', height: 55}} >
+        <View style={{ flexDirection: "row", height: 55 }}>
           <TextButton
-            label='Join Now'
+            label="Join Now"
             contentContainerStyle={{
               flex: 1,
               borderRadius: SIZES.radius,
-              backgroundColor: COLORS.lightGrey
+              backgroundColor: COLORS.lightGrey,
             }}
             labelStyle={{
               color: COLORS.primary,
-              ...FONTS.h3
+              ...FONTS.h3,
             }}
           />
           <TextButton
-            label='Log In'
+            label="Log In"
             contentContainerStyle={{
               flex: 1,
               borderRadius: SIZES.radius,
               backgroundColor: COLORS.primary,
-              marginLeft: SIZES.radius
+              marginLeft: SIZES.radius,
             }}
             labelStyle={{
-              ...FONTS.h3
+              ...FONTS.h3,
             }}
           />
         </View>
@@ -91,6 +98,7 @@ const Walkthrough = () => {
         keyExtractor={(item) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={onViewChangeRef.current}
         snapToInterval={SIZES.width}
         decelerationRate="fast"
         scrollEventThrottle={16}
@@ -103,10 +111,9 @@ const Walkthrough = () => {
         renderItem={({ item, index }) => {
           return (
             <View style={{ width: SIZES.width, justifyContent: "center" }}>
-              
-
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                {index == 0 && <Walkthrough1/>}
+              <View style={{ flex: 1, justifyContent: "center" }}>
+                {index == 0 && <Walkthrough1 />}
+                {index == 1 && <Walkthrough2 animate={walkthrough2Animate} />}
               </View>
 
               {/* Title and description */}
